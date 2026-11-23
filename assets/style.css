@@ -47,7 +47,8 @@ a { color: var(--accent); }
 }
 .hero-img { width: 180px; height: auto; flex-shrink: 0; filter: drop-shadow(0 10px 16px rgba(15, 110, 110, .15)); animation: hero-float 4s ease-in-out infinite; }
 @keyframes hero-float { 50% { transform: translateY(-10px) rotate(-2deg); } }
-@media (prefers-reduced-motion: reduce) { .hero-img { animation: none; } }
+@keyframes hero-float-soft { 50% { transform: translateY(-4px); } }
+@media (prefers-reduced-motion: reduce) { .hero-img { animation: hero-float-soft 6s ease-in-out infinite; } }
 @media (max-width: 600px) {
   .hero { flex-direction: column-reverse; align-items: flex-start; gap: 12px; padding: 28px 22px; margin-top: 16px; border-radius: 20px; }
   .hero-img { width: 120px; }
