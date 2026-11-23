@@ -39,18 +39,24 @@ a { color: var(--accent); }
 .btn:disabled { opacity: .45; cursor: not-allowed; }
 
 /* 공개 페이지 */
+/* 소개: 차분한 숲 서재 (연한 민트 번짐 + 얇은 테두리) */
 .hero {
-  padding: 40px 36px; margin-top: 24px; display: flex; align-items: center; justify-content: space-between; gap: 24px;
-  background: var(--accent-soft); border: 2px solid var(--accent); border-radius: var(--radius);
+  padding: 48px 44px; margin-top: 24px; display: flex; align-items: center; justify-content: space-between; gap: 24px;
+  background: radial-gradient(circle at 88% 20%, #cfe8e4 0, rgba(207, 232, 228, 0) 42%), linear-gradient(180deg, #f1f8f7 0%, #ffffff 100%);
+  border: 1px solid #d6e9e6; border-radius: 24px;
 }
-.hero-img { width: 160px; height: auto; flex-shrink: 0; }
+.hero-img { width: 180px; height: auto; flex-shrink: 0; filter: drop-shadow(0 10px 16px rgba(15, 110, 110, .15)); animation: hero-float 4s ease-in-out infinite; }
+@keyframes hero-float { 50% { transform: translateY(-10px) rotate(-2deg); } }
+@media (prefers-reduced-motion: reduce) { .hero-img { animation: none; } }
 @media (max-width: 600px) {
-  .hero { flex-direction: column-reverse; align-items: flex-start; gap: 12px; padding: 24px 20px; margin-top: 16px; }
-  .hero-img { width: 110px; }
+  .hero { flex-direction: column-reverse; align-items: flex-start; gap: 12px; padding: 28px 22px; margin-top: 16px; border-radius: 20px; }
+  .hero-img { width: 120px; }
 }
-.hero .label { color: var(--accent); font-weight: 700; font-size: 14px; }
-.hero h1 { font-size: clamp(26px, 5vw, 38px); line-height: 1.35; margin: 8px 0 12px; }
-.hero p { color: var(--muted); margin: 0 0 24px; }
+.hero .label { display: flex; align-items: center; gap: 8px; color: var(--accent); font-weight: 700; font-size: 13px; letter-spacing: .08em; }
+.hero .label::before { content: ""; width: 24px; height: 2px; background: var(--accent); border-radius: 2px; }
+.hero h1 { font-size: clamp(26px, 5vw, 38px); line-height: 1.35; margin: 8px 0 12px; color: #12403f; letter-spacing: -0.02em; }
+.hero p { color: #4f6b69; margin: 0 0 24px; }
+.hero .btn { border-radius: 999px; padding: 12px 24px; box-shadow: 0 6px 14px rgba(15, 110, 110, .25); }
 .section { padding: 32px 0; }
 .section h2 {
   display: inline-block; font-size: 22px; margin: 0 0 16px; padding: 4px 14px;
