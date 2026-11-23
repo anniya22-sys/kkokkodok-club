@@ -3,5 +3,5 @@
 // SITE_URL      : 내 Netlify 사이트 주소 (예: https://my-brand.netlify.app)
 window.APP_CONFIG = {
   SHEET_API_URL: "https://script.google.com/macros/s/AKfycbxtAkKVQqhD6stp92reI4nyNJXjyD9wnY_412qMSS0MXtTqkJElrLjKo2dWgks7evXLYw/exec",
-  SITE_URL: ""
+  SITE_URL: "https://kkokkodok.netlify.app"
 };
