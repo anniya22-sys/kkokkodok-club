@@ -39,10 +39,13 @@ a { color: var(--accent); }
 .btn:disabled { opacity: .45; cursor: not-allowed; }
 
 /* 공개 페이지 */
-.hero { padding: 56px 0 40px; display: flex; align-items: center; justify-content: space-between; gap: 24px; }
+.hero {
+  padding: 40px 36px; margin-top: 24px; display: flex; align-items: center; justify-content: space-between; gap: 24px;
+  background: var(--accent-soft); border: 2px solid var(--accent); border-radius: var(--radius);
+}
 .hero-img { width: 160px; height: auto; flex-shrink: 0; }
 @media (max-width: 600px) {
-  .hero { flex-direction: column-reverse; align-items: flex-start; gap: 12px; padding-top: 32px; }
+  .hero { flex-direction: column-reverse; align-items: flex-start; gap: 12px; padding: 24px 20px; margin-top: 16px; }
   .hero-img { width: 110px; }
 }
 .hero .label { color: var(--accent); font-weight: 700; font-size: 14px; }
