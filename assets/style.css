@@ -73,6 +73,13 @@ a { color: var(--accent); }
 .book-card .meta { color: var(--muted); font-size: 14px; margin: 2px 0 8px; }
 .book-card .meta:last-child { margin: 8px 0 0; }
 .book-form { margin-top: 16px; }
+.meeting-card { background: var(--accent-soft); border-color: var(--accent); max-width: 560px; }
+.meeting-book { font-size: 20px !important; line-height: 1.4; }
+.meeting-book .meta { color: var(--muted); font-size: 15px; font-weight: 500; }
+.meeting-info { display: grid; grid-template-columns: auto 1fr; gap: 4px 14px; margin: 12px 0 0; }
+.meeting-info dt { color: var(--accent); font-weight: 700; }
+.meeting-info dd { margin: 0; }
+.meeting-note { margin-top: 12px !important; color: var(--text) !important; }
 footer { padding: 32px 0; color: var(--muted); font-size: 14px; border-top: 1px solid var(--line); margin-top: 32px; }
 footer .admin-link { color: var(--accent); font-size: 14px; font-weight: 600; text-decoration: underline; text-underline-offset: 3px; }
 footer .admin-link:hover { color: var(--text); }

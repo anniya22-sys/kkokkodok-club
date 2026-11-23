@@ -16,6 +16,8 @@ async function renderPublic() {
     .map((s) => `<div class="card"><h3>${esc(s.title)}</h3><p>${esc(s.desc)}</p></div>`)
     .join("");
 
+  renderMeeting();
+
   // 3주차 기능 유지: 책 추천(화면에만 추가, 새로고침하면 사라짐)
   renderBooks();
   $("#book-form").addEventListener("submit", (e) => {
@@ -47,6 +49,65 @@ async function renderPublic() {
   $("#posts").innerHTML = posts.length
     ? posts.map((p) => `<li><a href="${esc(p.url)}">${esc(p.topic)}</a><div class="meta">${esc(p.publishedAt)}</div></li>`).join("")
     : `<li class="empty">발행된 콘텐츠가 곧 올라옵니다.</li>`;
+}
+
+// ---------- 다음 모임 일정 ----------
+function meetingDate(d) {
+  const m = /^(\d{4})-(\d{2})-(\d{2})$/.exec(d || "");
+  if (!m) return d || "";
+  const day = "일월화수목금토"[new Date(+m[1], m[2] - 1, +m[3]).getDay()];
+  return `${+m[2]}월 ${+m[3]}일 (${day})`;
+}
+
+function meetingTime(t) {
+  const m = /^(\d{1,2}):(\d{2})/.exec(t || "");
+  if (!m) return t || "";
+  const h = +m[1], min = +m[2];
+  const h12 = h % 12 === 0 ? 12 : h % 12;
+  return `${h < 12 ? "오전" : "오후"} ${h12}시${min ? ` ${min}분` : ""}`;
+}
+
+async function renderMeeting() {
+  const box = $("#meeting");
+  if (!box) return;
+  let m = null;
+  if (LIVE) {
+    try { const r = await SheetAPI.meeting(); if (r.ok) m = r.meeting; } catch (e) { /* 연결 실패 시 안내 문구 */ }
+  }
+  if (!m) { box.innerHTML = `<p class="empty">다음 모임 일정은 곧 안내해 드릴게요.</p>`; return; }
+  const rows = [
+    ["일시", [meetingDate(m.date), meetingTime(m.time)].filter(Boolean).join(" ")],
+    ["장소", m.place],
+    ["발제", m.presenter]
+  ].filter((r) => r[1]);
+  box.innerHTML = `
+    <h3 class="meeting-book">『${esc(m.book)}』${m.author ? `<span class="meta"> · ${esc(m.author)}</span>` : ""}</h3>
+    <dl class="meeting-info">${rows.map((r) => `<dt>${r[0]}</dt><dd>${esc(r[1])}</dd>`).join("")}</dl>
+    ${m.note ? `<p class="meeting-note">${esc(m.note)}</p>` : ""}`;
+}
+
+function fillMeetingForm(m) {
+  if (!m) return;
+  const map = { "m-date": m.date, "m-time": m.time, "m-place": m.place, "m-book": m.book, "m-author": m.author, "m-presenter": m.presenter, "m-note": m.note };
+  Object.keys(map).forEach((id) => { const el = $("#" + id); if (el) el.value = map[id] || ""; });
+}
+
+async function loadMeetingForm() {
+  if (!LIVE) return;
+  try { const r = await SheetAPI.call("getMeeting"); if (r.ok) fillMeetingForm(r.meeting); } catch (e) {}
+}
+
+async function saveMeeting(e) {
+  e.preventDefault();
+  if (!LIVE) { notice("구글 시트와 연결되어 있어야 저장할 수 있습니다."); return; }
+  const v = (id) => $("#" + id).value.trim();
+  const meeting = { date: v("m-date"), time: v("m-time"), place: v("m-place"), book: v("m-book"), author: v("m-author"), presenter: v("m-presenter"), note: v("m-note") };
+  notice("저장하는 중입니다…");
+  try {
+    const r = await SheetAPI.call("saveMeeting", { meeting });
+    if (!r.ok) { notice("저장하지 못했습니다: " + r.error); return; }
+    notice("다음 모임을 저장했습니다. 첫 화면에서 확인해 보세요.");
+  } catch (err) { notice("저장하지 못했습니다. 잠시 뒤 다시 눌러 주세요."); }
 }
 
 function renderBooks() {
@@ -186,6 +247,7 @@ async function enterAdmin() {
     const r = await SheetAPI.call("check");
     if (!r.ok) return alert(r.error || "비밀번호가 맞지 않습니다.");
     await loadItems();
+    loadMeetingForm();
   }
   $("#gate").classList.add("hidden");
   $("#console").classList.remove("hidden");
@@ -198,13 +260,15 @@ function initAdmin() {
   $("#code").addEventListener("keydown", (e) => { if (e.key === "Enter") enterAdmin(); });
   const refresh = $("#refresh");
   if (refresh) refresh.addEventListener("click", async () => { await loadItems(); renderAdmin(); notice("새로 불러왔습니다."); });
+  const meetingForm = $("#meeting-form");
+  if (meetingForm) meetingForm.addEventListener("submit", saveMeeting);
   const sheetUrl = window.APP_CONFIG && window.APP_CONFIG.SHEET_URL;
   const openSheet = $("#open-sheet");
   if (openSheet && sheetUrl) { openSheet.href = sheetUrl; openSheet.classList.remove("hidden"); }
   document.querySelectorAll(".tab").forEach((btn) =>
     btn.addEventListener("click", () => {
       document.querySelectorAll(".tab").forEach((b) => b.classList.toggle("active", b === btn));
-      ["proposals", "drafts", "threads", "records"].forEach((t) =>
+      ["proposals", "drafts", "threads", "records", "meeting"].forEach((t) =>
         $(`#tab-${t}`).classList.toggle("hidden", t !== btn.dataset.tab)
       );
     })

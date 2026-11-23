@@ -36,12 +36,33 @@
         <button class="tab" data-tab="drafts">초안 읽기</button>
         <button class="tab" data-tab="threads">쓰레드 글</button>
         <button class="tab" data-tab="records">기록</button>
+        <button class="tab" data-tab="meeting">다음 모임</button>
       </nav>
 
       <div id="tab-proposals"></div>
       <div id="tab-drafts" class="hidden"></div>
       <div id="tab-threads" class="hidden"></div>
       <div id="tab-records" class="hidden"></div>
+      <div id="tab-meeting" class="hidden">
+        <form class="card inquiry-form" id="meeting-form">
+          <p class="form-note">여기에 저장하면 첫 화면 '다음 모임'에 바로 보여요. 링크만 있으면 누구나 볼 수 있으니 연락처·회의 링크는 적지 말아 주세요.</p>
+          <label for="m-date">날짜</label>
+          <input id="m-date" type="date" required>
+          <label for="m-time">시간</label>
+          <input id="m-time" type="time">
+          <label for="m-place">장소</label>
+          <input id="m-place" type="text" placeholder="예: ○○도서관 세미나실 / 온라인">
+          <label for="m-book">책 제목</label>
+          <input id="m-book" type="text" placeholder="예: 책 제목" required>
+          <label for="m-author">지은이</label>
+          <input id="m-author" type="text" placeholder="예: 지은이">
+          <label for="m-presenter">발제자</label>
+          <input id="m-presenter" type="text" placeholder="예: 김○○ 선생님">
+          <label for="m-note">안내 한마디</label>
+          <textarea id="m-note" rows="3" placeholder="예: 이번엔 1~3장까지 함께 읽어요. 다 못 읽어도 편하게 오세요."></textarea>
+          <button class="btn" type="submit">저장하기</button>
+        </form>
+      </div>
     </section>
   </main>
 

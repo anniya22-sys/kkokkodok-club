@@ -16,6 +16,10 @@ const SheetAPI = {
     const r = await fetch(this.url() + "?action=public");
     return r.json();
   },
+  async meeting() {
+    const r = await fetch(this.url() + "?action=meeting");
+    return r.json();
+  },
   async call(action, payload = {}) {
     const r = await fetch(this.url(), {
       method: "POST",
