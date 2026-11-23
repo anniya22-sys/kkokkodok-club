@@ -9,7 +9,7 @@ async function renderPublic() {
   document.title = `${BRAND.name} | 콘텐츠 허브`;
   $("#brand-name").textContent = BRAND.name;
   $("#brand-definition").textContent = BRAND.definition;
-  $("#brand-audience").textContent = `이런 분께: ${BRAND.audience}`;
+  $("#brand-audience").textContent = BRAND.audience;
   ["#contact-top", "#contact-hero"].forEach((id) => { const el = $(id); if (el) el.href = BRAND.contactUrl; });
   $("#footer-text").textContent = `© ${new Date().getFullYear()} ${BRAND.name}`;
   $("#services").innerHTML = BRAND.services
