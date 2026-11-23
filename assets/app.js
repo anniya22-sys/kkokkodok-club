@@ -198,6 +198,9 @@ function initAdmin() {
   $("#code").addEventListener("keydown", (e) => { if (e.key === "Enter") enterAdmin(); });
   const refresh = $("#refresh");
   if (refresh) refresh.addEventListener("click", async () => { await loadItems(); renderAdmin(); notice("새로 불러왔습니다."); });
+  const sheetUrl = window.APP_CONFIG && window.APP_CONFIG.SHEET_URL;
+  const openSheet = $("#open-sheet");
+  if (openSheet && sheetUrl) { openSheet.href = sheetUrl; openSheet.classList.remove("hidden"); }
   document.querySelectorAll(".tab").forEach((btn) =>
     btn.addEventListener("click", () => {
       document.querySelectorAll(".tab").forEach((b) => b.classList.toggle("active", b === btn));
